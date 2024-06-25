@@ -66,7 +66,7 @@ if user_input:
         st.chat_message("gpt").write(assistant_response)
         
     # メッセージ数のチェックとリセット
-    if len(st.session_state.messages) >= 11:
+    if len(st.session_state.messages) >= 12:
         st.session_state.messages = [
             {'role': 'system', 'content': '100文字程度で端的に回答して'}
         ]
