@@ -20,7 +20,7 @@ if 'reset_flag' not in st.session_state:
 st.title("ChatGPTスタイルのチャットボット")
 # リセットフラグがTrueの場合、メッセージを表示してフラグをリセット
 if st.session_state.reset_flag:
-    st.warning("会話をリセットしました。")
+    st.warning("会話数の超過の為会話をリセットします")
     st.session_state.reset_flag = False
     
 # ユーザー入力
@@ -40,7 +40,7 @@ if user_input:
         st.chat_message("アップデート対象").write(last_assistant_content)
         
         for i in range(x):
-            if len(st.session_state.messages) >= 12:
+            if len(st.session_state.messages) >= 16:
                 st.session_state.messages = [
                     {'role': 'system', 'content': '100文字程度で端的に回答して'}
                 ]
@@ -50,17 +50,13 @@ if user_input:
                 
             prompt = 'この出力を60点とします。これを60点としたときに100点とはどのようなものですか？100点になるために足りないものを列挙し、その後に100点の回答を生成してください'
             st.session_state.messages.append({'role': 'user', 'content': prompt})
-            st.chat_message("num").write(len(st.session_state.messages))
-            
+            st.chat_message("gpt").write(f"回答 {i+1}:")
             response = openai.chat.completions.create(model='gpt-4o',
                 messages=st.session_state.messages
             )
             
             res = response.choices[0].message.content
             st.session_state.messages.append({'role': 'assistant', 'content': res})
-            st.chat_message("num").write(len(st.session_state.messages))
-
-            st.chat_message("gpt").write(f"回答 {i+1}:")
             st.chat_message("gpt").write(res)
             
     
@@ -68,7 +64,6 @@ if user_input:
         # 数字でない場合は通常の処理
         st.session_state.messages.append({'role': 'user', 'content': user_input})
         st.chat_message("user").write(user_input)
-        st.chat_message("num").write(len(st.session_state.messages))
         
         response = openai.chat.completions.create(model='gpt-4o',
             messages=st.session_state.messages
@@ -79,7 +74,7 @@ if user_input:
         st.chat_message("num").write(len(st.session_state.messages))
         
     # メッセージ数のチェックとリセット
-    if len(st.session_state.messages) >= 12:
+    if len(st.session_state.messages) >= 16:
         st.session_state.messages = [
             {'role': 'system', 'content': '100文字程度で端的に回答して'}
         ]
