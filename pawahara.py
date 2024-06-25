@@ -22,14 +22,22 @@ st.title("ChatGPTスタイルのチャットボット")
 if st.session_state.reset_flag:
     st.warning("会話をリセットしました。")
     st.session_state.reset_flag = False
+    
 # ユーザー入力
-user_input = st.text_input("メッセージを入力してください（数字を入力すると特別な処理を行います）:")
+user_input = st.chat_input("メッセージを入力してください（数字を入力すると特別な処理を行います）:")
 if user_input:
     try:
         # 数字の入力をチェック
         x = int(user_input)
         
         # 数字が入力された場合の特別な処理
+
+        last_assistant_content = None
+        for message in reversed(st.session_state.messages):
+            if message['role'] == 'assistant':
+                last_assistant_content = message['content']
+                break
+        st.chat_message("アップデート対象").write(last_assistant_content)
         
         for i in range(x):
             prompt = 'この出力を60点とします。これを60点としたときに100点とはどのようなものですか？100点になるために足りないものを列挙し、その後に100点の回答を生成してください'
@@ -41,9 +49,10 @@ if user_input:
             
             res = response.choices[0].message.content
             st.session_state.messages.append({'role': 'assistant', 'content': res})
+
+            st.chat_message("gpt").write(f"回答 {i+1}:")
+            st.chat_message("gpt").write(res)
             
-            st.write(f"回答 {i+1}:")
-            st.write(res)
     
     except ValueError:
         # 数字でない場合は通常の処理
@@ -53,6 +62,8 @@ if user_input:
         )
         assistant_response = response.choices[0].message.content
         st.session_state.messages.append({'role': 'assistant', 'content': assistant_response})
+        st.chat_message("gpt").write(res)
+        
     # メッセージ数のチェックとリセット
     if len(st.session_state.messages) >= 11:
         st.session_state.messages = [
@@ -60,9 +71,4 @@ if user_input:
         ]
         st.session_state.reset_flag = True
         st.experimental_rerun()
-# チャット履歴の表示（全ての対話を含む）
-for message in st.session_state.messages[1:]:  # システムメッセージをスキップ
-    if message['role'] == 'user':
-        st.write("You: " + message['content'])
-    else:
-        st.write("Assistant: " + message['content'])
+
