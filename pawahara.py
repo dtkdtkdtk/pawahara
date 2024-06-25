@@ -1,5 +1,3 @@
-
-
 import streamlit as st
 import openai
 # OpenAI APIキーの設定
@@ -48,7 +46,6 @@ if user_input:
     except ValueError:
         # 数字でない場合は通常の処理
         st.session_state.messages.append({'role': 'user', 'content': user_input})
-        
         response = openai.chat.completions.create(model='gpt-4o',
             messages=st.session_state.messages
         )
