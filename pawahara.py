@@ -57,12 +57,13 @@ if user_input:
     except ValueError:
         # 数字でない場合は通常の処理
         st.session_state.messages.append({'role': 'user', 'content': user_input})
+        st.chat_message("user").write(user_input)
         response = openai.chat.completions.create(model='gpt-4o',
             messages=st.session_state.messages
         )
         assistant_response = response.choices[0].message.content
         st.session_state.messages.append({'role': 'assistant', 'content': assistant_response})
-        st.chat_message("gpt").write(res)
+        st.chat_message("gpt").write(assistant_response)
         
     # メッセージ数のチェックとリセット
     if len(st.session_state.messages) >= 11:
