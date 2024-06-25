@@ -8,7 +8,7 @@ with st.sidebar:
         "OpenAI API Key", key="chatbot_api_key", type="password"
     )
     st.write("[Get an OpenAI API key](https://platform.openai.com/account/api-keys)")
-
+openai.api_key = openai_api_key
 
 # セッション状態の初期化
 if 'messages' not in st.session_state:
@@ -34,7 +34,7 @@ if user_input:
         for i in range(x):
             prompt = 'この出力を60点とします。これを60点としたときに100点とはどのようなものですか？100点になるために足りないものを列挙し、その後に100点の回答を生成してください'
             st.session_state.messages.append({'role': 'user', 'content': prompt})
-            openai.api_key = openai_api_key
+            
             response = openai.chat.completions.create(model='gpt-4o',
                 messages=st.session_state.messages
             )
@@ -48,7 +48,7 @@ if user_input:
     except ValueError:
         # 数字でない場合は通常の処理
         st.session_state.messages.append({'role': 'user', 'content': user_input})
-        openai.api_key = openai_api_key
+        
         response = openai.chat.completions.create(model='gpt-4o',
             messages=st.session_state.messages
         )
