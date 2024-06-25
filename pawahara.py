@@ -71,7 +71,6 @@ if user_input:
         assistant_response = response.choices[0].message.content
         st.session_state.messages.append({'role': 'assistant', 'content': assistant_response})
         st.chat_message("gpt").write(assistant_response)
-        st.chat_message("num").write(len(st.session_state.messages))
         
     # メッセージ数のチェックとリセット
     if len(st.session_state.messages) >= 16:
