@@ -40,6 +40,13 @@ if user_input:
         st.chat_message("アップデート対象").write(last_assistant_content)
         
         for i in range(x):
+            if len(st.session_state.messages) >= 21:
+                st.session_state.messages = [
+                    {'role': 'system', 'content': '100文字程度で端的に回答して'}
+                ]
+                st.session_state.reset_flag = True
+                st.experimental_rerun()
+                
             prompt = 'この出力を60点とします。これを60点としたときに100点とはどのようなものですか？100点になるために足りないものを列挙し、その後に100点の回答を生成してください'
             st.session_state.messages.append({'role': 'user', 'content': prompt})
             st.chat_message("num").write(len(st.session_state.messages))
@@ -71,7 +78,7 @@ if user_input:
         st.chat_message("num").write(len(st.session_state.messages))
         
     # メッセージ数のチェックとリセット
-    if len(st.session_state.messages) >= 21:
+    if len(st.session_state.messages) >= 12:
         st.session_state.messages = [
             {'role': 'system', 'content': '100文字程度で端的に回答して'}
         ]
