@@ -17,7 +17,7 @@ if 'messages' not in st.session_state:
     ]
 if 'reset_flag' not in st.session_state:
     st.session_state.reset_flag = False
-st.title("ChatGPTスタイルのチャットボット")
+st.title("gptにパワハラするためのチャットボット")
 # リセットフラグがTrueの場合、メッセージを表示してフラグをリセット
 if st.session_state.reset_flag:
     st.warning("会話数の超過の為会話をリセットします")
