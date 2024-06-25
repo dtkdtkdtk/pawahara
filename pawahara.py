@@ -42,6 +42,7 @@ if user_input:
         for i in range(x):
             prompt = 'この出力を60点とします。これを60点としたときに100点とはどのようなものですか？100点になるために足りないものを列挙し、その後に100点の回答を生成してください'
             st.session_state.messages.append({'role': 'user', 'content': prompt})
+            st.chat_message("num").write(len(st.session_state.messages))
             
             response = openai.chat.completions.create(model='gpt-4o',
                 messages=st.session_state.messages
@@ -49,6 +50,7 @@ if user_input:
             
             res = response.choices[0].message.content
             st.session_state.messages.append({'role': 'assistant', 'content': res})
+            st.chat_message("num").write(len(st.session_state.messages))
 
             st.chat_message("gpt").write(f"回答 {i+1}:")
             st.chat_message("gpt").write(res)
@@ -58,12 +60,15 @@ if user_input:
         # 数字でない場合は通常の処理
         st.session_state.messages.append({'role': 'user', 'content': user_input})
         st.chat_message("user").write(user_input)
+        st.chat_message("num").write(len(st.session_state.messages))
+        
         response = openai.chat.completions.create(model='gpt-4o',
             messages=st.session_state.messages
         )
         assistant_response = response.choices[0].message.content
         st.session_state.messages.append({'role': 'assistant', 'content': assistant_response})
         st.chat_message("gpt").write(assistant_response)
+        st.chat_message("num").write(len(st.session_state.messages))
         
     # メッセージ数のチェックとリセット
     if len(st.session_state.messages) >= 12:
