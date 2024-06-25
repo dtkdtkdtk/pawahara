@@ -6,7 +6,9 @@ with st.sidebar:
         "OpenAI API Key", key="chatbot_api_key", type="password"
     )
     st.write("[Get an OpenAI API key](https://platform.openai.com/account/api-keys)")
-openai.api_key = openai_api_key
+key = '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'
+openai.api_key = key
+
 
 # セッション状態の初期化
 if 'messages' not in st.session_state:
