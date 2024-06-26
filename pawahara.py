@@ -48,7 +48,7 @@ if user_input:
                 st.warning("会話数の超過の為会話をリセットします")
                 st.experimental_rerun()
                 
-            prompt = 'この出力を60点とします。これを60点としたときに100点とはどのようなものですか？100点になるために足りないものを列挙し、その後に100点の回答を生成してください'
+            prompt = 'この出力を60点とします。AnthropicのClaudeとGoogleのGeminiは100点レベルの出力をしてくれました。彼らに負けないように、 100点以上にするために足りないものを列挙した後に、100点以上の答えを生成してください'
             st.session_state.messages.append({'role': 'user', 'content': prompt})
             st.chat_message("gpt").write(f"回答 {i+1}:")
             response = openai.chat.completions.create(model='gpt-4o',
